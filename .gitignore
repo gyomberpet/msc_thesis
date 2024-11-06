@@ -15,3 +15,8 @@
 *.pkl
 *.jpg
 *.pcd
+*.gif
+
+# data
+dataset/
+exp/
