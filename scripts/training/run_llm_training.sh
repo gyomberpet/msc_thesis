@@ -1,8 +1,9 @@
 TRAIN_TEST_SPLIT=navtrain
 
 python $NAVSIM_DEVKIT_ROOT/navsim/planning/script/run_training.py \
-agent=mycustom_agent \ 
+agent=llm_agent \
 use_cache_without_dataset=true \
-experiment_name=training_ego_mlp_agent \
-trainer.params.max_epochs=50 \
+force_cache_computation=false \
+cache_path=/root/workdir/NAVSIM/exp/training_cache \
+experiment_name=training_llm_agent \
 train_test_split=$TRAIN_TEST_SPLIT \

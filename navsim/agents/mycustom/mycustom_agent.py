@@ -1,5 +1,6 @@
 from typing import Any, List, Dict, Optional, Union
 import numpy as np
+from omegaconf import DictConfig
 import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
@@ -8,9 +9,6 @@ from navsim.common.dataclasses import SensorConfig, Trajectory, AgentInput
 from navsim.planning.training.abstract_feature_target_builder import AbstractFeatureBuilder, AbstractTargetBuilder
 from navsim.agents.mycustom.mycustom_features import MyCustomFeatureBuilder, MyCustomTargetBuilder
 from nuplan.planning.simulation.trajectory.trajectory_sampling import TrajectorySampling
-
-from hydra.utils import instantiate
-
 
 class MyCustomAgent(AbstractAgent):
     def __init__(
@@ -76,6 +74,3 @@ class MyCustomAgent(AbstractAgent):
     
     def get_optimizers(self) -> Union[Optimizer, Dict[str, Union[Optimizer, LRScheduler]]]:
         return torch.optim.Adam(self._model.parameters(), lr=self._lr)
-
-agent = instantiate("ego_status_mlp_agent")
-print(agent.name())
