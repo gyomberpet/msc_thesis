@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 from navsim.agents.transfuser.transfuser_config import TransfuserConfig
 from navsim.agents.transfuser.transfuser_features import BoundingBox2DIndex
-
+import numpy as np
 
 def transfuser_loss(
     targets: Dict[str, torch.Tensor], predictions: Dict[str, torch.Tensor], config: TransfuserConfig
@@ -70,11 +70,16 @@ def _agent_loss(
     cost = config.agent_class_weight * ce_cost + config.agent_box_weight * l1_cost
     cost = cost.cpu()
 
-    indices = [linear_sum_assignment(c) for i, c in enumerate(cost)]
-    matching = [
-        (torch.as_tensor(i, dtype=torch.int64), torch.as_tensor(j, dtype=torch.int64))
-        for i, j in indices
-    ]
+    cost = np.nan_to_num=(cost)
+    try:
+        indices = [linear_sum_assignment(c) for i, c in enumerate(cost)]
+        matching = [
+            (torch.as_tensor(i, dtype=torch.int64), torch.as_tensor(j, dtype=torch.int64))
+            for i, j in indices
+        ]
+    except:
+        print(cost)
+        
     idx = _get_src_permutation_idx(matching)
 
     pred_states_idx = pred_states[idx]
